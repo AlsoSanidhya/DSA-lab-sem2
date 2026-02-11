@@ -1,6 +1,6 @@
-//insertion at the given position 
-
+//insertion at the given position
 #include <stdio.h>
+
 int main() {
     int arr[100], pos, i, n, value;
 
@@ -17,7 +17,7 @@ int main() {
 
     if (pos < 1 || pos > n + 1) {
         printf("Invalid position! Please enter a position between 1 and %d.\n", n + 1);
-        return 1;55
+        return 1;
     }
 
     printf("Enter the value to insert: ");
