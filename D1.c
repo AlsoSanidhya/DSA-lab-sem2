@@ -1,42 +1,93 @@
 //insertion at the given position 
-
 #include <stdio.h>
-int main() {
-    int arr[100], pos, i, n, value;
+#include <stdlib.h>
 
-    printf("Enter the number of elements in the array: ");
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL;
+
+// Insert at beginning (used when position = 1)
+void insert_beg(int value) {
+    struct node *new_node;
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = value;
+    new_node->next = start;
+    start = new_node;
+}
+
+// Insert at given position
+void insert_pos(int value, int pos) {
+    struct node *new_node, *temp;
+    int i;
+
+    // If position is 1, insert at beginning
+    if (pos == 1) {
+        insert_beg(value);
+        return;
+    }
+
+    new_node = (struct node *)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Memory not available\n");
+        return;
+    }
+
+    new_node->data = value;
+
+    temp = start;
+    for (i = 1; i < pos - 1 && temp != NULL; i++) {
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Invalid position\n");
+        return;
+    }
+
+    new_node->next = temp->next;
+    temp->next = new_node;
+}
+
+// Display list
+void display() {
+    struct node *temp = start;
+    printf("Linked list: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    int n, value, pos, i;
+
+    // Create list at beginning
+    printf("How many nodes to create: ");
     scanf("%d", &n);
 
-    printf("Enter the elements of the array: ");
     for (i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
+        printf("Enter data: ");
+        scanf("%d", &value);
+        insert_beg(value);
     }
 
-    printf("Enter the position to insert the new element: ");
+    display();
+
+    // Insert at given position
+    printf("Enter value to insert: ");
+    scanf("%d", &value);
+    printf("Enter position: ");
     scanf("%d", &pos);
 
-    if (pos < 1 || pos > n + 1) {
-        printf("Invalid position! Please enter a position between 1 and %d.\n", n + 1);
-        return 1;55
-    }
-
-    printf("Enter the value to insert: ");
-    scanf("%d", &value);
-
-    // Shift elements to the right to make space for the new element
-    for (i = n; i >= pos; i--) {
-        arr[i] = arr[i - 1];
-    }
-
-    // Insert the new element at the specified position
-    arr[pos - 1] = value;
-    n++; // Increment the number of elements
-
-    printf("Array after insertion: ");
-    for (i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
+    insert_pos(value, pos);
+    display();
 
     return 0;
 }
+
+
+
